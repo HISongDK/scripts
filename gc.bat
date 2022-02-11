@@ -9,13 +9,12 @@ chcp 65001
 echo 当前目录为：%cd%
 echo;
 
-
 echo 添加变更：git add .
 git add .
 echo;
  
-set /p declation=输入提交的commit信息:
-git commit -m "%declation%"
+set /p commitMsg=输入提交的commit信息:
+git commit -m "%commitMsg%"
 echo;
 
 echo 执行完毕！
