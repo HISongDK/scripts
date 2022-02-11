@@ -14,7 +14,7 @@ git add .
 echo
 
 echo git commit -m $commitInfo
-git commit -m $commitInfo
+git commit -m "$commitInfo"
 echo
 
 echo "\033[32m提交完毕\033[0m"
