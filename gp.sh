@@ -1,7 +1,3 @@
-# 1、cd 到当前目录
-# currentDir=$(cd "$(dirname "$0")"; pwd)
-# cd ${currentDir}
-
 # 1、打印当前目录
 echo 当前目录：
 pwd
