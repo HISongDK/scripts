@@ -38,7 +38,7 @@
     // 隐藏 mongoose 中文文档广告大图
     const hideMongoAdPic = () => {
         if (!url.includes('mongoose')) return
-        injectCss('img[alt="vip课程"]{ display:none }')
+        injectCss('img[alt="vip课程"]{ display:none } pre{ font-size: 16px}')
     }
 
     /**
