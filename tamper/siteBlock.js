@@ -39,14 +39,14 @@
         if (url.includes('bing'))
             injectCss(
                 `
-									#ev_talkbox_wrapper{ display:none }
-  						    #est_switch{ opacity: 0} 
-									#est_switch:hover{ opacity: 1} 
-									.header,.footer{ display:none } 
-									.mc_caro{bottom:0 !important} 
-									.sbox{ margin:auto; top:25% }
-									#sb_form, #sw_as .sa_hv{ background:rgba(255,255,255,.2); font-size:22px}
-								`
+                  #ev_talkbox_wrapper{ display:none }
+                  #est_switch{ opacity: 0} 
+                  #est_switch:hover{ opacity: 1} 
+                  .header,.footer{ display:none } 
+                  .mc_caro{bottom:0 !important} 
+                  .sbox{ margin:auto; top:25% }
+                  #sb_form, #sw_as .sa_hv{ background:rgba(255,255,255,.2); font-size:22px}
+                `
             )
     }
 
