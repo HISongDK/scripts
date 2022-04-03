@@ -12,7 +12,11 @@
     'use strict'
 
     const url = location.href
-    const blockSite = ['weibo.com', 'twitter', 'qzone']
+    const blockSite = [
+        'qzone', // 空间
+        // 'twitter', // 推特
+        'weibo.com', // 微博
+    ]
 
     // 对应站点重定向回 bing 首页
     blockSite.forEach((item) => {
@@ -29,16 +33,32 @@
         document.head.appendChild(style)
     }
 
-    // 隐藏 bing 聊天机器人
+    // bing 页面样式优化
     const hideBingRobot = () => {
-        if (!url.includes('bing')) return
-        injectCss('#ev_talkbox_wrapper{ display:none }')
+        // 隐藏 bing 聊天机器人
+        if (url.includes('bing'))
+            injectCss(
+                `
+									#ev_talkbox_wrapper{ display:none }
+  						    #est_switch{ opacity: 0} 
+									#est_switch:hover{ opacity: 1} 
+									.header,.footer{ display:none } 
+									.mc_caro{bottom:0 !important} 
+									.sbox{ margin:auto; top:25% }
+									#sb_form, #sw_as .sa_hv{ background:rgba(255,255,255,.2); font-size:22px}
+								`
+            )
     }
 
     // 隐藏 mongoose 中文文档广告大图
     const hideMongoAdPic = () => {
-        if (!url.includes('mongoose')) return
-        injectCss('img[alt="vip课程"]{ display:none } pre{ font-size: 16px}')
+        if (url.includes('mongoose'))
+            injectCss('img[alt="vip课程"]{ display:none } pre{ font-size: 16px}')
+    }
+
+    // 隐藏美剧网站切换线路按钮
+    const hideChangeWayBtn = () => {
+        if (url.includes('bkmeiju')) injectCss('.slide{height:36px} .OK-jiexi{display:none} ')
     }
 
     /**
@@ -46,10 +66,5 @@
      */
     hideBingRobot()
     hideMongoAdPic()
-
-    window.addEventListener('load', () => {
-        // 百度知道自动展开全文
-        let readWholeBtn = document.querySelector('.read-whole')
-        if (readWholeBtn) readWholeBtn.click()
-    })
+    hideChangeWayBtn()
 })()
