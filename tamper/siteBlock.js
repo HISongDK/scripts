@@ -34,7 +34,7 @@
     }
 
     // bing 页面样式优化
-    const hideBingRobot = () => {
+    const bing = () => {
         // 隐藏 bing 聊天机器人
         if (url.includes('bing'))
             injectCss(
@@ -46,6 +46,7 @@
                   .mc_caro{bottom:0 !important} 
                   .sbox{ margin:auto; top:25% }
                   #sb_form, #sw_as .sa_hv{ background:rgba(255,255,255,.2); font-size:22px}
+                  .icon_text,.leftNav,.rightNav{ background:rgba(255,255,255,.2) !important }
                 `
             )
     }
@@ -56,15 +57,9 @@
             injectCss('img[alt="vip课程"]{ display:none } pre{ font-size: 16px}')
     }
 
-    // 隐藏美剧网站切换线路按钮
-    const hideChangeWayBtn = () => {
-        if (url.includes('bkmeiju')) injectCss('.slide{height:36px} .OK-jiexi{display:none} ')
-    }
-
     /**
      * 调用方法
      */
-    hideBingRobot()
+    bing()
     hideMongoAdPic()
-    hideChangeWayBtn()
 })()
