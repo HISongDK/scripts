@@ -2,9 +2,10 @@
 // @name         【自用】各网页广告屏蔽、样式优化
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  try to take over the world!
+// @description  一个乱七八遭的自用脚本
 // @author       You
-// @match        https://twitter.com/home
+// @match        https://*
+// @license MIT
 // @grant        none
 // ==/UserScript==
 
