@@ -3,9 +3,9 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  一个乱七八遭的自用脚本
-// @author       You
+// @author       dksong
 // @match        https://*
-// @license MIT
+// @license      MIT
 // @grant        none
 // ==/UserScript==
 
@@ -48,7 +48,7 @@
                   .sbox{ margin:auto; top:25% }
                   #sb_form, #sw_as .sa_hv{ background:rgba(255,255,255,.2); font-size:22px}
                   .icon_text,.leftNav,.rightNav{ background:rgba(255,255,255,.2) !important }
-                `
+                `,
             )
     }
 
