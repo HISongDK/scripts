@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         【自用】各网页广告屏蔽、样式优化
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  一个乱七八遭的自用脚本
 // @author       dksong
-// @match        https://*
+// @include      *
 // @license      MIT
 // @grant        none
 // ==/UserScript==
@@ -49,7 +49,7 @@
 										display: flex;
 										justify-content: center;
 									}
-                  .sbox{ top:25% }
+                  .sbox{ margin:auto; top:25% }
                   #sb_form, #sw_as .sa_hv{ background:rgba(255,255,255,.2); font-size:22px}
                   .icon_text,.leftNav,.rightNav{ background:rgba(255,255,255,.2) !important }
                 `,
