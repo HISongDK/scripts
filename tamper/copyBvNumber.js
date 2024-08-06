@@ -13,6 +13,7 @@
     // Your code here...
     window.addEventListener('load', () => {
         setTimeout(() => {
+            // 点击标题复制 BV 号
             const title = document.querySelector(
                 '#viewbox_report > div.video-info-title > div > h1',
             )
@@ -28,6 +29,9 @@
                         console.log('Something went wrong', err)
                     })
             })
+            // 选集框全部展开
+            const list = document.querySelector('#multi_page > div.cur-list')
+            list && (list.style.maxHeight = 'none')
         }, 1500)
     })
 })()
