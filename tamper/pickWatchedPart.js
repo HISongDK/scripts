@@ -2,70 +2,110 @@
 // @name         B站合集链接自动跳转最高播放集数
 // @namespace    http://tampermonkey.net/
 // @version      0.2
-// @description  B站合集链接收藏路径，自动跳转到曾播放的最高集数
+// @description  B站合集链接收藏路径，自动跳转到曾播放的最新集数
 // @author       You
-// @match        https://www.bilibili.com/video/*
+// @match        https://www.bilibili.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=bilibili.com
 // @grant        none
 // @license      MIT
 // ==/UserScript==
 
-(function() {
-  'use strict';
+;(function () {
+    'use strict'
 
-  // 点击列表更新存储集数
-  const addPChangedListener = (sourceCode)=>{
-      const list = document.querySelectorAll('.list-box li')
+    const NUMBER_OF_EPISODES = 'NUMBER_OF_EPISODES'
 
-      list.forEach((item,index)=>{
-          item.addEventListener('click',()=>{
-              console.log(index)
-              localStorage.setItem(sourceCode,index+1)
-          })
-      })
-  }
+    // 将对应 BVID 集数按照固定格式保存到 localStorage
+    const setNumberOfEpisodesStorage = (sourceCode, p) => {
+        if (!sourceCode || !p) return
 
-  // 刷新或关闭页面前 获取链接当前集 对比保存集数，链接集数新则更新
-  const addUrlBeforeunload = (sourceCode)=>{
-      window.addEventListener('beforeunload',()=>{
-          const p = new URLSearchParams(location.search).get('p')
-          const storeCodeP = localStorage.getItem(sourceCode)
-          if(Number(p) > Number(storeCodeP)){
-              localStorage.setItem(sourceCode,p)
-          }
+        const data = JSON.parse(
+            localStorage.getItem(NUMBER_OF_EPISODES) || '{}',
+        )
 
-      })
-  }
+        p = Number(p)
 
-  window.onload = function(){
-      console.log('location.href',location.href)
+        if (data[sourceCode]) {
+            data[sourceCode].p = p
+        } else {
+            data[sourceCode] = {
+                p,
+                title: document.title,
+            }
+        }
 
-      const sourceCode = location.pathname.split('/')[2]
+        localStorage.setItem(NUMBER_OF_EPISODES, JSON.stringify(data))
+    }
 
-      addUrlBeforeunload(sourceCode)
-      addPChangedListener(sourceCode)
+    // 获取对应 BV 号对应的集数
+    const getStoredNumber = (bvid) => {
+        const data = JSON.parse(
+            localStorage.getItem(NUMBER_OF_EPISODES) || '{}',
+        )
+        return data[bvid]?.p
+    }
 
-      const urlParams = new URLSearchParams(location.search)
+    // 点击列表更新存储集数
+    const addPChangedListener = (sourceCode) => {
+        const list = document.querySelectorAll('.list-box li')
 
-      const part = urlParams.get('p')
-      const storeCodeP = localStorage.getItem(sourceCode)
+        list.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                setNumberOfEpisodesStorage(sourceCode, index + 1)
+            })
+        })
+    }
 
+    // 刷新或关闭页面前 获取链接当前集 对比保存集数，链接集数新则更新
+    const addUrlBeforeunload = (sourceCode) => {
+        window.addEventListener('beforeunload', () => {
+            const p = new URLSearchParams(location.search).get('p')
+            const storeCodeP = getStoredNumber(sourceCode)
+            if (Number(p) > Number(storeCodeP)) {
+                setNumberOfEpisodesStorage(sourceCode, p)
+            }
+        })
+    }
 
-      // 链接集数存在，且未保存，直接保存
-      if(part && (!storeCodeP || storeCodeP === 'null')) {return localStorage.setItem(sourceCode, part)}
+    window.onload = function () {
+        const urlParams = new URLSearchParams(location.search)
 
-      // 保存和当前相同，不处理
-      if(storeCodeP === part) return
+        // 收藏全部播放页面 bvid 是 url search params（收藏页全部播放集数跳转不完善，不过也不用管了，没必要）
+        const bvid = urlParams.get('bvid')
+        // 视频合集 bvid 位置示例：www.bilibili.com/video/BV1Yi421h7s4
+        const sourceCode = bvid || location.pathname.split('/')[2]
 
-      // 保存集数小于链接集数，更新
-      if(Number(storeCodeP) < Number(part)) {
-          return localStorage.setItem(sourceCode, part)
-      }
+        addUrlBeforeunload(sourceCode)
+        addPChangedListener(sourceCode)
 
-      // 确认跳转
-      const res = confirm(`当前视频最新观看集数为 ${storeCodeP} ，是否立即跳转到该集数？`)
-      if(res){
-          location.href = location.origin + location.pathname + `?p=${storeCodeP}`
-      } 
-  }
-})();
+        const p = Number(urlParams.get('p'))
+        const storeCodeP = getStoredNumber(sourceCode)
+
+        // 两者都没有，不做处理
+        if (!storeCodeP && !p) return
+
+        // 链接集数存在，且未保存，直接保存
+        if (p && !storeCodeP) {
+            setNumberOfEpisodesStorage(sourceCode, p)
+        }
+
+        // 保存和当前相同，不处理
+        if (storeCodeP === p) return
+
+        // 保存集数小于链接集数，更新
+        if (storeCodeP < p) {
+            return setNumberOfEpisodesStorage(sourceCode, p)
+        }
+
+        // 确认跳转
+        // const res = confirm(
+        //     `当前视频最新观看集数为 ${storeCodeP} ，是否立即跳转到该集数？`,
+        // )
+        // if (res) {
+        // location.href = location.origin + location.pathname + `?p=${storeCodeP}`
+        // }
+
+        // 自动跳转
+        location.href = location.origin + location.pathname + `?p=${storeCodeP}`
+    }
+})()
