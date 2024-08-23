@@ -67,7 +67,42 @@
         })
     }
 
+    // 连播按钮控制：分集自动连播，其余不连播
+    const continuousBroadcastControl = () => {
+        const seriesSwitch = document.querySelector(
+            '#multi_page .switch-button',
+        )
+
+        const otherSwitch = document.querySelector(
+            '#mirror-vdcon .switch-button',
+        )
+
+        setTimeout(() => {
+            if (seriesSwitch) {
+                const list = Array.from(seriesSwitch.classList)
+                const isOff = !list.includes('on')
+
+                if (isOff) {
+                    seriesSwitch.click()
+                }
+
+                return
+            }
+
+            if (otherSwitch) {
+                const list = Array.from(otherSwitch.classList)
+                const isOn = list.includes('on')
+
+                if (isOn) {
+                    otherSwitch.click()
+                }
+            }
+        }, 3000)
+    }
+
     window.onload = function () {
+        continuousBroadcastControl()
+
         const urlParams = new URLSearchParams(location.search)
 
         // 收藏全部播放页面 bvid 是 url search params（收藏页全部播放集数跳转不完善，不过也不用管了，没必要）
