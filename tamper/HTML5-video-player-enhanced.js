@@ -120,7 +120,9 @@ function hackAttachShadow() {
             window.Element.prototype.attachShadow
         window.Element.prototype.attachShadow = function () {
             const arg = arguments
-            if (arg[0] && arg[0].mode) {
+            // NOTE: https://linux.do/t/topic/92604/28
+            // <-- 這裏加上 ` && !window.unsafeWindow.turnstile`
+            if (arg[0] && arg[0].mode && !window.unsafeWindow.turnstile) {
                 // 强制使用 open mode
                 arg[0].mode = 'open'
             }
@@ -2181,7 +2183,6 @@ const configManager = new ConfigManager({
                 key: 'z',
                 command: 'resetPlaybackRate',
             },
-            // NOTE: ctrl + 数字键 调整倍速会和浏览器切换 tab 有冲突
             // {
             //     desc: '设置1x的播放速度',
             //     key: 'Digit1',
