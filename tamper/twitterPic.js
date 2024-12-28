@@ -15,7 +15,7 @@
 // @author              Hayao-Gai
 // @namespace           https://github.com/HayaoGai
 // @icon                https://i.imgur.com/M9oO8K9.png
-// @match               https://twitter.com/*
+// @match               https://x.com/*
 // @grant               none
 // ==/UserScript==
 
@@ -148,8 +148,8 @@
                             .querySelector("[data-testid='playButton']"))
                 ) {
                     const image = thumbnail.parentElement.querySelector('img')
-                    image.addEventListener('mousemove', showImage)
-                    image.addEventListener('mouseleave', hideImage)
+                    image?.addEventListener('mousemove', showImage)
+                    image?.addEventListener('mouseleave', hideImage)
                 }
             })
     }
